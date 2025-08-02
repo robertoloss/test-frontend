@@ -36,7 +36,7 @@ export default function TaskCard({ task, updateOptimisticTasks }: Props) {
   return (
     <div
       className={cn(
-        "h-16 text-[#f2f2f2] bg-[#262626]",
+        " text-[#f2f2f2] bg-[#262626]",
         "border-[#333333] border",
         "rounded-lg gap-4 h-fit flex flex-row p-4 justify-between",
       )}
@@ -56,6 +56,8 @@ export default function TaskCard({ task, updateOptimisticTasks }: Props) {
       <h1 className={cn(
         "flex w-full items-start",
         "text-[16px] font-normal text-[#f2f2f2]",
+        "break-all whitespace-pre-wrap",
+        "[overflow-wrap:anywhere]",
         { "line-through text-[#808080]": optimisticStatus}
       )}>
         {task.title}

@@ -1,9 +1,9 @@
 'use client'
+
 import { Task } from "@/types/types";
 import NoTasks from "./no-tasks";
 import TaskCard from "./task-card";
 import { useOptimistic } from "react";
-
 
 export default function ClientTaskList(props: { tasks: Task[] | undefined}) {
   const [ optimisticTasks, updateOptimisticTasks ] = useOptimistic(
@@ -15,16 +15,18 @@ export default function ClientTaskList(props: { tasks: Task[] | undefined}) {
       } 
     }
   )
-
   return (
     <>
-      {optimisticTasks?.map(task =>(
-        <TaskCard 
-          task={task} 
-          key={task.id}
-          updateOptimisticTasks={updateOptimisticTasks}
-        />
-      ))}
+      {optimisticTasks
+        ?.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .map(task =>(
+          <TaskCard 
+            task={task} 
+            key={task.id}
+            updateOptimisticTasks={updateOptimisticTasks}
+          />
+        ))
+      }
       {!optimisticTasks || optimisticTasks.length === 0 && <NoTasks/>}
     </>
   )

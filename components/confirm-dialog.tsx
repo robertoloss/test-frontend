@@ -35,13 +35,13 @@ export function ConfirmDialog({ title, description, action, children }: Props) {
       <DialogTrigger asChild>
         { children }
       </DialogTrigger>
-      <DialogContent className="flex flex-col sm:max-w-[425px] h-full max-h-[160px] justify-between">
+      <DialogContent className="flex flex-col sm:max-w-[425px] gap-y-10 justify-between">
         <DialogHeader>
           <DialogTitle className="text-[#333333]">
             { title }
           </DialogTitle>
           {description && 
-            <DialogDescription>
+            <DialogDescription className="text-[#333333] break-all">
               {description}
             </DialogDescription>
           }

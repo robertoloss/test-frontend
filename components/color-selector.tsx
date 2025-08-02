@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react"
 import Label from "./label"
 import { cn } from "@/lib/utils"
 
@@ -13,8 +14,9 @@ const colors = [
 type Props = {
   selectedColor: string
   setValue: (color: string) => void
+  setIncomplete: Dispatch<SetStateAction<boolean>>
 }
-export default function ColorSelector({ selectedColor, setValue }: Props) {
+export default function ColorSelector({ selectedColor, setValue, setIncomplete }: Props) {
   return (
     <div className="flex w-full flex-col gap-4">
       <Label label="Color"/>
@@ -25,6 +27,7 @@ export default function ColorSelector({ selectedColor, setValue }: Props) {
             color={color}
             setValue={setValue}
             selectedColor={selectedColor}
+            setIncomplete={setIncomplete}
           />
         ))}
       </div>
@@ -37,8 +40,18 @@ type PropsCC = {
   color: string
   setValue: (color: string) => void;
   selectedColor: string
+  setIncomplete: Dispatch<SetStateAction<boolean>>
 }
-function ColorCircle({ color, setValue, selectedColor }: PropsCC) {
+function ColorCircle({ color, setValue, selectedColor, setIncomplete }: PropsCC) {
+
+  function selectColor() {
+    setIncomplete(false)
+    if (color === selectedColor) {
+      setValue('')
+    } else {
+      setValue(color)
+    }
+  }
 
   return (
     <div 
@@ -48,7 +61,7 @@ function ColorCircle({ color, setValue, selectedColor }: PropsCC) {
         "hover:cursor-pointer hover:opacity-90",
         selectedColor === color ? "ring-2 ring-white" : ""
       )}
-      onClick={() => setValue(color)}
+      onClick={selectColor}
     />
   )
 }

@@ -18,6 +18,7 @@ import { PlusCircle } from "lucide-react"
 import { UseMutateFunction } from "@tanstack/react-query"
 import { NewTask } from "@/app/task/page"
 import { cn } from "@/lib/utils"
+import { Dispatch, SetStateAction } from "react"
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -33,8 +34,9 @@ type Props = {
   action: UseMutateFunction<Response, Error, NewTask, unknown>
   children: React.ReactNode
   form: UseFormReturn<Inputs, any, Inputs>
+  setIncomplete: Dispatch<SetStateAction<boolean>>
 }
-export default function MainForm({ action, children, form }: Props) {
+export default function MainForm({ action, children, form, setIncomplete }: Props) {
 
   return (
     <Form {...form}>
@@ -50,6 +52,7 @@ export default function MainForm({ action, children, form }: Props) {
               <Label label="Task"/>
               <FormControl>
                 <Input 
+                  onFocus={()=>setIncomplete(false)}
                   placeholder="Ex. Brush your teeth" 
                   {...form.register("title")} 
                   className={cn(
