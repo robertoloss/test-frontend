@@ -56,7 +56,7 @@ export function ConfirmDialog({ title, description, action, children }: Props) {
             </Button>
           </DialogClose>
           <Button
-            className="flex cursor-pointer w-[100px] text-left"
+            className="flex cursor-pointer min-w-[100px] text-left"
             onClick={handleConfirm}
           >
             <h1 className="flex w-fit">
