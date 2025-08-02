@@ -1,15 +1,17 @@
 'use client'
 
+import { createTask } from "@/actions/create-task";
 import BackArrow from "@/components/back-arrow";
 import ColorSelector from "@/components/color-selector";
 import { MainButton } from "@/components/main-button";
-import MainForm from "@/components/main-form";
+import MainForm, { Inputs } from "@/components/main-form";
+import { useOptimisticStore } from "@/lib/store";
 import { serverUrl } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from '@tanstack/react-query';
 import { Check, Loader2Icon, PlusCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -51,14 +53,31 @@ export default function TaskPage() {
     defaultValues: { title: '', color: '' },
     mode: 'onChange',
   })
+  const updateOptimistic = useOptimisticStore(s => s.updateOptimisticTasks)
+  const [isPending, startTransition] = useTransition()
 
+  async function handleCreateTask(data: Inputs) {
+    startTransition(()=>updateOptimistic!({
+      action: 'add',
+      task: {
+        id: -9999999,
+        title: data.title,
+        color: data.color,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        completed: false,
+      }
+    }))
+    await createTask(data)
+    router.push('/')
+  }
 
   return (
     <div className="flex flex-col text-white w-full h-screen pt-[80px]">
       <BackArrow href="/"/>
       <div className="h-14"/>
       <MainForm 
-        action={mutation.mutate} 
+        action={handleCreateTask} 
         form={form}
         setIncomplete={setIncomplete}
       >
@@ -79,13 +98,13 @@ export default function TaskPage() {
         }
         {(form.getValues('color') && form.getValues('title')!='') && 
           <MainButton
-            disabled={mutation.isPending}
+            disabled={isPending}
             type="submit"
             label="Save"
             showIcon={true}
           >
-            {!mutation.isPending && <Check size={16} strokeWidth={4}/>}
-            {mutation.isPending && <Loader2Icon className="animate-spin"/>}
+            {!isPending && <Check size={16} strokeWidth={4}/>}
+            {isPending && <Loader2Icon className="animate-spin"/>}
           </MainButton>
         }
         {incomplete &&

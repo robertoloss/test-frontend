@@ -1,37 +1,16 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, UseFormReturn } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+import { UseFormReturn } from "react-hook-form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Label from "./label"
-import { MainButton } from "./main-button"
-import { PlusCircle } from "lucide-react"
-import { UseMutateFunction } from "@tanstack/react-query"
-import { NewTask } from "@/app/task/page"
 import { cn } from "@/lib/utils"
 import { Dispatch, SetStateAction } from "react"
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-})
 
 export type Inputs = {
   color: string,
   title: string
 }
 type Props = {
-  action: UseMutateFunction<Response, Error, NewTask, unknown>
+  action:(inputs: Inputs) => Promise<void> 
   children: React.ReactNode
   form: UseFormReturn<Inputs, any, Inputs>
   setIncomplete: Dispatch<SetStateAction<boolean>>
@@ -41,7 +20,7 @@ export default function MainForm({ action, children, form, setIncomplete }: Prop
   return (
     <Form {...form}>
       <form 
-        onSubmit={form.handleSubmit((data)=>action(data))} 
+        onSubmit={form.handleSubmit((data)=> action(data))} 
         className="space-y-8"
       >
         <FormField

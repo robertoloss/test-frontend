@@ -1,6 +1,8 @@
 import AddTaskButton from "@/components/add-task-button";
+import ListLoading from "@/components/list-loading";
 import TaskList from "@/components/task-list";
 import { serverUrl } from "@/lib/utils";
+import { Suspense } from "react";
 
 export default async function Home() {
 
@@ -10,7 +12,9 @@ export default async function Home() {
   return (
     <div className="flex flex-col h-fit min-h-0 w-full pb-10">
       <AddTaskButton offsetY="-mt-7"/>
-      <TaskList tasks={tasks}/>
+      <Suspense fallback={<ListLoading/>}>
+        <TaskList tasks={tasks}/>
+      </Suspense>
     </div>
   );
 }
