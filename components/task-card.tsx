@@ -65,7 +65,8 @@ export default function TaskCard({ task, updateOptimisticTasks }: Props) {
         { [task.color as string]: task.color }
       )}/>
       <ConfirmDialog
-        title="Delete this task?"
+        title="Confirm deletion"
+        description={`Are you sure you want to delete the task "${task.title}"?`}
         action={handleDelete}
       >
         <Trash2Icon
