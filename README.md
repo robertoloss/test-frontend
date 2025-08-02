@@ -15,8 +15,8 @@ This README will help you get the Next.js frontend up and running locally.
 ## 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/your-frontend-repo.git
-cd your-frontend-repo
+git clone https://github.com/robertoloss/test-frontend
+cd test-frontend 
 ```
 
 ---
