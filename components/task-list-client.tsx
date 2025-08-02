@@ -33,7 +33,8 @@ export default function ClientTaskList(props: { tasks: Task[] | undefined}) {
       <TaskListHeader tasks={optimisticTasks}/>
       <div className={cn(
         "flex gap-4 flex-col w-full",
-        "max-h-[80%] overflow-y-scroll"
+        "overflow-y-scroll",
+        //{ "max-h-[80%]": optimisticTasks?.length != 1}
       )}>
       {optimisticTasks
         ?.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())

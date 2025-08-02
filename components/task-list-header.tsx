@@ -37,7 +37,7 @@ function NumberPill(props: { num: number, tasks?: number }) {
       "bg-[#333333] text-[#d9d9d9] rounded-full flex items-center justify-center",
       "h-5 min-w-5 p-2 text-[12px] font-bold"
     )}>
-      {props.num} {props.tasks && <span>{'\u00A0'}of{'\u00A0'}{props.tasks}</span>}
+      {props.num} {(props.tasks || props.tasks === 0) && <span>{'\u00A0'}of{'\u00A0'}{props.tasks}</span>}
     </div>
   )
 }

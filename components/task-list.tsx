@@ -10,7 +10,7 @@ export default function TaskList({ tasks }: Props) {
   const allTasks = use(tasks).tasks
 
   return (
-    <div className={cn("flex gap-4 flex-col text-white mt-20 w-full")}>
+    <div className={cn("flex max-h-[80%] gap-4 flex-col text-white mt-20 w-full")}>
       <ClientTaskList tasks={allTasks}/>
     </div>
   )
