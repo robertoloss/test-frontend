@@ -41,7 +41,7 @@ export default function TaskCard({ task, updateOptimisticTasks }: Props) {
       className={cn(
         " text-[#f2f2f2] bg-[#262626]",
         "border-[#333333] border",
-        "rounded-lg gap-4 h-fit flex flex-row p-4 justify-between",
+        "rounded-lg gap-4 h-fit flex flex-row p-4 justify-between w-full",
       )}
     >
       <div className="p-[1px]">
