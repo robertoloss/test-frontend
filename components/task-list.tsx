@@ -13,7 +13,7 @@ export default function TaskList({ tasks }: Props) {
   return (
     <div className={cn(
       "flex gap-4 flex-col text-white mt-20 w-full",
-      "max-h-[80%] overflow-y-scroll pr-2"
+      "max-h-[80%] overflow-y-scroll"
     )}>
       <ClientTaskList tasks={allTasks}/>
     </div>

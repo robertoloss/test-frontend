@@ -42,6 +42,7 @@ export default function TaskPage() {
     onSuccess: () => {
       form.setValue('color', '')
       form.setValue('title', '')
+      router.refresh()
       router.push('/')
     }
   })

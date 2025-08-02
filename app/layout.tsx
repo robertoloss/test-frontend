@@ -29,6 +29,7 @@ export default function RootLayout({ children }: Props) {
     <html lang="en">
       <body className={cn(
         `${geistSans.variable} ${geistMono.variable} antialiased`,
+        ""
       )}>
         <QueryProvider>
           <Header>
