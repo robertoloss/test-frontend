@@ -4,7 +4,7 @@ import { Task } from "@/types/types";
 import { Checkbox } from "./ui/checkbox";
 import { Trash2Icon } from "lucide-react";
 import { checkboxAction } from "@/actions/checkbox-action";
-import { useOptimistic, useTransition } from "react";
+import { useTransition } from "react";
 import { deleteTask } from "@/actions/delete-task";
 
 type Props = {
@@ -12,16 +12,19 @@ type Props = {
   updateOptimisticTasks: (action: {action: string, task: Task})=> void
 }
 export default function TaskCard({ task, updateOptimisticTasks }: Props) {
-  const [ optimisticStatus, updateOptimisticStatus ] = useOptimistic(
-    task.completed,
-    (_, newStatus:boolean) => newStatus
-  )
   const [_,startTransition ] = useTransition()
 
   function handleCheckbox() {
-    startTransition(()=>updateOptimisticStatus(!optimisticStatus))
+    const newStatus = !task.completed
+    startTransition(()=>updateOptimisticTasks({
+      action: 'check',
+      task: {
+        ...task,
+        completed: newStatus
+      }
+    }))
     checkboxAction({
-      newStatus: !optimisticStatus,
+      newStatus: newStatus,
       id: task.id
     })
   }
@@ -48,9 +51,9 @@ export default function TaskCard({ task, updateOptimisticTasks }: Props) {
             "h-[18px] w-[18px] border-[#1E6F9F] border text-[#1e6f9f]",
             "rounded-full border-2",
             "hover:cursor-pointer",
-            optimisticStatus && "bg-[#333333]"
+            task.completed && "bg-[#333333]"
           )}
-          checked={optimisticStatus}
+          checked={task.completed}
         />
       </div>
       <h1 className={cn(
@@ -58,7 +61,7 @@ export default function TaskCard({ task, updateOptimisticTasks }: Props) {
         "text-[16px] font-normal text-[#f2f2f2]",
         "break-all whitespace-pre-wrap",
         "[overflow-wrap:anywhere]",
-        { "line-through text-[#808080]": optimisticStatus}
+        { "line-through text-[#808080]": task.completed}
       )}>
         {task.title}
       </h1>

@@ -73,9 +73,9 @@ export default function TaskPage() {
   }
 
   return (
-    <div className="flex flex-col text-white w-full h-screen pt-[80px]">
+    <div className="pb-10 flex flex-col text-white w-full h-screen pt-4 sm:pt-[80px]">
       <BackArrow href="/"/>
-      <div className="h-14"/>
+      <div className="h-4 sm:h-14"/>
       <MainForm 
         action={handleCreateTask} 
         form={form}
