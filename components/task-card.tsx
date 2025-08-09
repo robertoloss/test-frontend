@@ -6,10 +6,11 @@ import { Trash2Icon } from "lucide-react";
 import { checkboxAction } from "@/actions/checkbox-action";
 import { useTransition } from "react";
 import { deleteTask } from "@/actions/delete-task";
+import { UpdateOptimisticTasks } from "@/app/task-client-container";
 
 type Props = {
   task: Task
-  updateOptimisticTasks: (action: {action: string, task: Task})=> void
+  updateOptimisticTasks: UpdateOptimisticTasks 
 }
 export default function TaskCard({ task, updateOptimisticTasks }: Props) {
   const [_,startTransition ] = useTransition()
@@ -66,7 +67,7 @@ export default function TaskCard({ task, updateOptimisticTasks }: Props) {
         {task.title}
       </h1>
       <div className={cn(
-        "h-5 w-5 aspect-square rounded-full",
+        "flex self-center h-5 w-5 aspect-square rounded-full",
         { [task.color as string]: task.color }
       )}/>
       <ConfirmDialog

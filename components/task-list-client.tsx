@@ -1,42 +1,24 @@
-'use client'
-
 import { Task } from "@/types/types";
 import NoTasks from "./no-tasks";
 import TaskCard from "./task-card";
-import { useEffect, useOptimistic } from "react";
-import { useOptimisticStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import TaskListHeader from "./task-list-header";
+import { UpdateOptimisticTasks } from "@/app/task-client-container";
 
-export default function ClientTaskList(props: { tasks: Task[] | undefined}) {
-  const setUpdate = useOptimisticStore(s => s.setUpdateOptimisticTasks)
-
-  const [ optimisticTasks, updateOptimisticTasks ] = useOptimistic(
-    props.tasks,
-    (prev, { action, task }: { action: string, task: Task }) => {
-      switch (action) {
-        case 'delete':
-          return prev?.filter(t => t.id != task.id) || []
-        case 'add':
-          return prev ? [...prev, task] : [ task ]
-        case 'check':
-          return prev ? [...prev.filter(t=>t.id!=task.id), task] : [ task ]
-      } 
-    }
-  )
-  useEffect(() => {
-    setUpdate(updateOptimisticTasks)
-  }, [updateOptimisticTasks, setUpdate])
+type Props = {
+  tasks: Task[]
+  updateOptimisticTasks: UpdateOptimisticTasks
+}
+export default function ClientTaskList({ tasks, updateOptimisticTasks }: Props) {
 
   return (
-    <>
-      <TaskListHeader tasks={optimisticTasks}/>
+    <div className="flex max-h-[80%] gap-4 flex-col text-white mt-20 w-full">
+      <TaskListHeader tasks={tasks}/>
       <div className={cn(
         "flex gap-4 flex-col w-full",
         "overflow-y-auto",
-        //{ "max-h-[80%]": optimisticTasks?.length != 1}
       )}>
-      {optimisticTasks
+      {tasks
         ?.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         .map(task =>(
           <TaskCard 
@@ -46,8 +28,8 @@ export default function ClientTaskList(props: { tasks: Task[] | undefined}) {
           />
         ))
       }
-      {!optimisticTasks || optimisticTasks.length === 0 && <NoTasks/>}
+      {!tasks || tasks.length === 0 && <NoTasks/>}
       </div>
-    </>
+    </div>
   )
 }

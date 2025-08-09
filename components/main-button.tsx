@@ -11,6 +11,7 @@ type Props = {
   children?: React.ReactNode
   type?: "button" | "submit" | "reset" | undefined
   disabled?: boolean
+  className?: string
 }
 export function MainButton({ 
   offsetY, 
@@ -19,7 +20,8 @@ export function MainButton({
   showIcon,
   children,
   type,
-  disabled
+  disabled,
+  className
 }
   : Props
 ) {
@@ -31,7 +33,8 @@ export function MainButton({
         "bg-[#1E6F9F] h-14 w-full font-bold",
         offsetY,
         "hover:opacity-90 hover:cursor-pointer hover:bg-[#1E6F9F]",
-        { "hover:cursor-not-allowed": disabled }
+        { "hover:cursor-not-allowed": disabled },
+        className
       )}
       onClick={onClick}
     >

@@ -1,23 +1,21 @@
 import { CirclePlus } from "lucide-react"
-import Link from "next/link"
 import { MainButton, OffsetY } from "./main-button"
+import { Dispatch, SetStateAction } from "react"
 
 type Props = {
   offsetY: OffsetY
+  setShowAddTask: Dispatch<SetStateAction<boolean>>
 }
-export default function AddTaskButton({ offsetY }: Props) {
+export default function AddTaskButton({ offsetY, setShowAddTask }: Props) {
   return (
-    <Link 
-      href='task'
+    <MainButton
+      onClick={()=>setShowAddTask(true)}
       className="flex w-full"
+      label="Create Task"
+      showIcon={true}
+      offsetY={offsetY}
     >
-      <MainButton
-        label="Create Task"
-        showIcon={true}
-        offsetY={offsetY}
-      >
-        <CirclePlus/>
-      </MainButton>
-    </Link>
+      <CirclePlus/>
+    </MainButton>
   )
 }

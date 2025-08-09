@@ -1,19 +1,13 @@
-'use client'
-
 import { createTask } from "@/actions/create-task";
-import BackArrow from "@/components/back-arrow";
 import ColorSelector from "@/components/color-selector";
 import { MainButton } from "@/components/main-button";
 import MainForm, { Inputs } from "@/components/main-form";
-import { useOptimisticStore } from "@/lib/store";
-import { serverUrl } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from '@tanstack/react-query';
-import { Check, Loader2Icon, PlusCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { ArrowLeft, Check, Loader2Icon, PlusCircle } from "lucide-react";
+import { Dispatch, SetStateAction, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { UpdateOptimisticTasks } from "./task-client-container";
 
 const taskSchema = z.object({
   title: z.string().trim().min(1, 'Title is required').max(191, 'Max 191 characters'),
@@ -22,42 +16,23 @@ const taskSchema = z.object({
 
 export type NewTask = z.infer<typeof taskSchema>
 
-
-export default function TaskPage() {
+type Props = {
+  setShowAddTask: Dispatch<SetStateAction<boolean>>
+  updateOptimisticTasks: UpdateOptimisticTasks
+}
+export default function AddTask({ setShowAddTask, updateOptimisticTasks }: Props) {
   const [ incomplete, setIncomplete ] = useState(false)
-  const router = useRouter()
 
-  const mutation = useMutation({
-    mutationFn: (newTask: NewTask) => {
-      console.log(newTask)
-      return fetch(serverUrl + '/api/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          title: newTask.title,
-          color: newTask.color
-        })
-      })
-    },
-    onSuccess: () => {
-      form.setValue('color', '')
-      form.setValue('title', '')
-      router.refresh()
-      router.push('/')
-    }
-  })
   const form = useForm<NewTask>({
     resolver: zodResolver(taskSchema),
     defaultValues: { title: '', color: '' },
     mode: 'onChange',
   })
-  const updateOptimistic = useOptimisticStore(s => s.updateOptimisticTasks)
   const [isPending, startTransition] = useTransition()
 
   async function handleCreateTask(data: Inputs) {
-    startTransition(()=>updateOptimistic!({
+    setShowAddTask(false)
+    startTransition(()=>updateOptimisticTasks({
       action: 'add',
       task: {
         id: -9999999,
@@ -69,12 +44,16 @@ export default function TaskPage() {
       }
     }))
     await createTask(data)
-    router.push('/')
   }
 
   return (
     <div className="pb-10 flex flex-col text-white w-full h-screen pt-4 sm:pt-[80px]">
-      <BackArrow href="/"/>
+      <div 
+        className="flex rounded-full hover:scale-110 aspect-square w-fit transition-all hover:cursor-pointer"
+        onClick={()=>setShowAddTask(false)}
+      >
+        <ArrowLeft/>
+      </div>
       <div className="h-4 sm:h-14"/>
       <MainForm 
         action={handleCreateTask} 
