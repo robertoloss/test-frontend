@@ -45,18 +45,18 @@ export default function TaskCard({ task, updateOptimisticTasks }: Props) {
         "rounded-lg gap-4 h-fit flex flex-row p-4 justify-between w-full",
       )}
     >
-      <div className="p-[1px]">
-        <Checkbox 
-          onClick={handleCheckbox}
-          className={cn(
-            "h-[18px] w-[18px] border-[#1E6F9F] border text-[#1e6f9f]",
-            "rounded-full border-2",
-            "hover:cursor-pointer",
-            task.completed && "bg-[#333333]"
-          )}
-          checked={task.completed}
-        />
-      </div>
+      <Checkbox 
+        onClick={handleCheckbox}
+        className={cn(
+          "h-[18px] w-[18px] border-[#1E6F9F] text-[#1e6f9f]",
+          "rounded-full p-0",
+          !task.completed && "border-2",
+          "hover:cursor-pointer",
+          "flex justify-center items-center",
+          task.completed && "bg-[#333333]",
+        )}
+        checked={task.completed}
+      />
       <h1 className={cn(
         "flex w-full items-start",
         "text-[16px] font-normal text-[#f2f2f2]",
